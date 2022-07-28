@@ -65,12 +65,6 @@ static void jm_itoa(char *dest, long int src) {
 	if (is_negative) dest[--i] = '-';
 }
 
-extern void jm_ftoa(char *dest, double src) {
-	//TODO
-	(void)dest;
-	(void)src;
-}
-
 void json_begin(char *json) {
 	jm_strcat(json, "{");
 }
@@ -109,7 +103,7 @@ void json_value_string(char *json, char *string) {
 }
 
 void json_value_number(char *json, long int number) {
-	char buffer[sizeof("INT_MAX=======")];
+	char buffer[sizeof("2147483647L")] = {0};
 	
 	jm_itoa(buffer, number);
 	jm_strcat(json, buffer);

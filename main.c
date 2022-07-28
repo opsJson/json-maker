@@ -40,7 +40,7 @@ int main(void) {
 			
 			json_array_begin(json);
 			{
-				json_value_double(json, 1234.567890123);
+				json_value_double(json, 123.456789);
 			}
 			json_array_end(json);
 		}
