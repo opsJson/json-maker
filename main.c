@@ -16,8 +16,12 @@ int main(void) {
 		json_array_end(json);
 		
 		json_key(json, "Numbers");
-		json_value_number(json, 123456789);
-		//TODO: test negative
+		json_array_begin(json);
+		{
+			json_value_number(json, 123456789);
+			json_value_number(json, -123456789);
+		}
+		json_array_end(json);
 		
 		json_key(json, "special");
 		json_array_begin(json);

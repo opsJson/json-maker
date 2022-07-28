@@ -36,25 +36,39 @@ static void jm_strcat(char *dest, char *src) {
 	jm_strcpy(dest + jm_strlen(dest), src);
 }
 
-static void jm_itoa(char *dest, long int src, int radix) {
-	unsigned int i = 0, digit, save;
-	save = src;
+static void jm_itoa(char *dest, long int src) {
+	unsigned int i, digit, digits, is_negative;
 	
-	while (save) {
-		save /= 10;
+	i = 0;
+	is_negative = 0;
+	
+	if (src < 0) {
+		src -= 2*src;
+		is_negative = 1;
+		i++;
+	}
+	
+	digits = src;
+	
+	while (digits) {
+		digits /= 10;
 		i++;
 	}
 	
 	while (src) {
-		digit = src % radix;
-		src /= radix;
+		digit = src % 10;
+		src /= 10;
 		
 		dest[--i] = digit + 48;
 	}
+	
+	if (is_negative) dest[--i] = '-';
 }
 
-static void jm_ftoa(char *dest, double src) {
+extern void jm_ftoa(char *dest, double src) {
 	//TODO
+	(void)dest;
+	(void)src;
 }
 
 void json_begin(char *json) {
@@ -97,7 +111,7 @@ void json_value_string(char *json, char *string) {
 void json_value_number(char *json, long int number) {
 	char buffer[sizeof("INT_MAX=======")];
 	
-	jm_itoa(buffer, number, 10);
+	jm_itoa(buffer, number);
 	jm_strcat(json, buffer);
 	jm_strcat(json, ",");
 }
