@@ -3,11 +3,11 @@ ANSCI C Json Maker
 
 ## Features
 - ANSI C (C89).
-- 0 allocations.
-- 0 dependencies.
-- 0 obfuscated custom types.
 - Easy set of functions.
 - Simple, small and fast.
+- 0 allocations.
+- 0 dependencies. (almost)
+- 0 obfuscated custom types.
 
 ## Functions
 ### objects:
