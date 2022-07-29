@@ -6,7 +6,7 @@ ANSCI C Json Maker
 - Easy set of functions.
 - Simple, small and fast.
 - 0 allocations.
-- 0 dependencies. (almost)
+- 0 dependencies. (for now, only libc.)
 - 0 obfuscated custom types.
 
 ## Functions
