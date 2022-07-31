@@ -30,7 +30,7 @@ ANSCI C Json Maker
 
 `json_value_number(char *json, long int number);`
 
-`json_value_double(char *json, double d);`
+`void json_value_double(char *json, double number);`
 
 `json_value_bool(char *json, char boolean);`
 
