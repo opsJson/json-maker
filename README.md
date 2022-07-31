@@ -5,8 +5,9 @@ ANSCI C Json Maker
 - ANSI C (C89).
 - Easy set of functions.
 - Simple, small and fast.
+- Don't need libc.
 - 0 allocations.
-- 0 dependencies. (for now, only libc.)
+- 0 dependencies.
 - 0 obfuscated custom types.
 
 ## Functions

@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-O3 -Wall -Wextra
+FLAGS=-O3 -Wall -Wextra -std=c89 -pedantic
 
 main: main.c
-	$(CC) $(INCLUDE) $(LIBS) $(FLAGS) main.c -o main
+	$(CC) $(FLAGS) main.c -o main
