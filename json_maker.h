@@ -4,7 +4,7 @@
 /* MACROS */
 
 #ifndef JM_DOUBLE_PRECISION
-#define JM_DOUBLE_PRECISION 1000000
+#define JM_DOUBLE_PRECISION 10000000
 #endif
 
 /* PUBLIC FUNCTIONS DECLARATION */
@@ -139,12 +139,14 @@ void json_value_number(char *json, long int number) {
 }
 
 void json_value_double(char *json, double number) {
-	unsigned int integer, decimal;
+	long int integer, decimal;
 	
 	if (number < 0) number -= 2*number;
 	
-	integer = (int)number;
-	decimal = (int)(number * JM_DOUBLE_PRECISION) % JM_DOUBLE_PRECISION;
+	integer = (long int)number;
+	decimal = (long int)(number * JM_DOUBLE_PRECISION) % JM_DOUBLE_PRECISION;
+	
+	while (decimal % 10 == 0) decimal /= 10;
 	
 	jm_number_to_str(json, integer);
 	
