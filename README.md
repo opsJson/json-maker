@@ -9,7 +9,7 @@ ANSCI C Json Maker
 - 0 allocations.
 - 0 dependencies.
 - 0 obfuscated custom types.  
-- supports widechars (add the "_wc" prefix to any of the functions in this library)
+- Supports widechars (add the "_wc" prefix to any of the functions in this library)
 
 ## Functions
 ### objects:
