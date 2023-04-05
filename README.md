@@ -8,7 +8,8 @@ ANSCI C Json Maker
 - Don't need libc.
 - 0 allocations.
 - 0 dependencies.
-- 0 obfuscated custom types.
+- 0 obfuscated custom types.  
+- supports widechars (add the "_wc" prefix to any of the functions in this library)
 
 ## Functions
 ### objects:
