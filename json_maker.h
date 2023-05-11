@@ -102,6 +102,10 @@ void json_end(char *json) {
 }
 
 void json_array_begin(char *json) {
+	json += jm_strlen(json);
+	
+	if (*(json-1) == ']')  jm_strcat(json, ",");
+	
 	jm_strcat(json, "[");
 }
 
@@ -110,7 +114,7 @@ void json_array_end(char *json) {
 	
 	if (*json != ',') json++;
 	
-	jm_strcpy(json, "],");
+	jm_strcpy(json, "]");
 }
 
 void json_key(char *json, char *key) {
@@ -276,6 +280,10 @@ void json_end_wc(wchar_t *json) {
 }
 
 void json_array_begin_wc(wchar_t *json) {
+	json += jm_strlen_wc(json);
+	
+	if (*(json-1) == L']')  jm_strcat_wc(json, L",");
+	
 	jm_strcat_wc(json, L"[");
 }
 
@@ -284,7 +292,7 @@ void json_array_end_wc(wchar_t *json) {
 	
 	if (*json != L',') json++;
 	
-	jm_strcpy_wc(json, L"],");
+	jm_strcpy_wc(json, L"]");
 }
 
 void json_key_wc(wchar_t *json, wchar_t *key) {
