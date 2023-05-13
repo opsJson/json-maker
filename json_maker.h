@@ -13,8 +13,8 @@ void json_begin(char *json);
 void json_end(char *json);
 void json_array_begin(char *json);
 void json_array_end(char *json);
-void json_key(char *json, char *key);
-void json_value_string(char *json, char *string);
+void json_key(char *json, const char *key);
+void json_value_string(char *json, const char *string);
 void json_value_number(char *json, long int number);
 void json_value_double(char *json, double number);
 void json_value_bool(char *json, int boolean);
@@ -22,14 +22,15 @@ void json_value_null(char *json);
 
 /* PRIVATE FUNCTIONS DECLARATION */
 
-static unsigned int jm_strlen(char *src);
-static void jm_strcpy(char *dest, char *src);
-static void jm_strcat(char *dest, char *src);
+static unsigned int jm_strlen(const char *src);
+static void jm_strcpy(char *dest, const char *src);
+static void jm_strcat(char *dest, const char *src);
 static void jm_number_to_str(char *dest, long int number);
+static void jm_strcat_escaped(char *json, const char *string);
 
 /* PRIVATE FUNCTIONS IMPLEMENTATION */
 
-static unsigned int jm_strlen(char *src) {
+static unsigned int jm_strlen(const char *src) {
 	unsigned int i = 0;
 	while (*(src + i)) {
 		i++;
@@ -38,7 +39,7 @@ static unsigned int jm_strlen(char *src) {
 	return i;
 }
 
-static void jm_strcpy(char *dest, char *src) {
+static void jm_strcpy(char *dest, const char *src) {
 	unsigned int i, length;
 	
 	length = jm_strlen(src);
@@ -49,7 +50,7 @@ static void jm_strcpy(char *dest, char *src) {
 	dest[i] = 0;
 }
 
-static void jm_strcat(char *dest, char *src) {
+static void jm_strcat(char *dest, const char *src) {
 	jm_strcpy(dest + jm_strlen(dest), src);
 }
 
@@ -61,7 +62,13 @@ static void jm_number_to_str(char *dest, long int number) {
 		number -= 2*number;
 		is_negative = 1;
 	}
-	else is_negative = 0;
+	else if (number == 0) {
+	    is_negative = 0;
+	    digits++;
+	}
+	else {
+	    is_negative = 0;
+	}
 	
 	if (is_negative) digits++;
 	
@@ -81,6 +88,29 @@ static void jm_number_to_str(char *dest, long int number) {
 	}
 	
 	if (is_negative) dest[length] = '-';
+}
+
+static void jm_strcat_escaped(char *json, const char *string) {
+	int i, j, length;
+	
+	j = jm_strlen(json);
+	length = jm_strlen(string);
+	
+	for (i=0; i<length; i++) {
+		if (string[i] == '\"') {
+			json[j++] = '\\';
+			json[j++] = '\"';
+		}
+		else if (string[i] == '\n') {
+			json[j++] = '\\';
+			json[j++] = 'n';
+		}
+		else {
+			json[j++] = string[i];
+		}
+	}
+	
+	json[j++] = 0;
 }
 
 /* PUBLIC FUNCTIONS IMPLEMENTATION */
@@ -117,7 +147,7 @@ void json_array_end(char *json) {
 	jm_strcpy(json, "]");
 }
 
-void json_key(char *json, char *key) {
+void json_key(char *json, const char *key) {
 	json += jm_strlen(json) -1;
 	
 	if (*json == '}') {
@@ -130,9 +160,9 @@ void json_key(char *json, char *key) {
 	jm_strcat(json, ":");
 }
 
-void json_value_string(char *json, char *string) {
+void json_value_string(char *json, const char *string) {
 	jm_strcat(json, "\"");
-	jm_strcat(json, string);
+	jm_strcat_escaped(json, string);
 	jm_strcat(json, "\"");
 	jm_strcat(json, ",");
 }
@@ -191,8 +221,8 @@ void json_begin_wc(wchar_t *json);
 void json_end_wc(wchar_t *json);
 void json_array_begin_wc(wchar_t *json);
 void json_array_end_wc(wchar_t *json);
-void json_key_wc(wchar_t *json, wchar_t *key);
-void json_value_string_wc(wchar_t *json, wchar_t *string);
+void json_key_wc(wchar_t *json, const wchar_t *key);
+void json_value_string_wc(wchar_t *json, const wchar_t *string);
 void json_value_number_wc(wchar_t *json, long int number);
 void json_value_double_wc(wchar_t *json, double number);
 void json_value_bool_wc(wchar_t *json, int boolean);
@@ -200,14 +230,15 @@ void json_value_null_wc(wchar_t *json);
 
 /* PRIVATE FUNCTIONS DECLARATION */
 
-static unsigned int jm_strlen_wc(wchar_t *src);
-static void jm_strcpy_wc(wchar_t *dest, wchar_t *src);
-static void jm_strcat_wc(wchar_t *dest, wchar_t *src);
+static unsigned int jm_strlen_wc(const wchar_t *src);
+static void jm_strcpy_wc(wchar_t *dest, const wchar_t *src);
+static void jm_strcat_wc(wchar_t *dest, const wchar_t *src);
 static void jm_number_to_str_wc(wchar_t *dest, long int number);
+static void jm_strcat_escaped_wc(wchar_t *json, const wchar_t *string);
 
 /* PRIVATE FUNCTIONS IMPLEMENTATION */
 
-static unsigned int jm_strlen_wc(wchar_t *src) {
+static unsigned int jm_strlen_wc(const wchar_t *src) {
 	unsigned int i = 0;
 	while (*(src + i)) {
 		i++;
@@ -239,7 +270,13 @@ static void jm_number_to_str_wc(wchar_t *dest, long int number) {
 		number -= 2*number;
 		is_negative = 1;
 	}
-	else is_negative = 0;
+	else if (number == 0) {
+		is_negative = 0;
+		digits++;
+	}
+	else {
+		is_negative = 0;
+	}
 	
 	if (is_negative) digits++;
 	
@@ -259,6 +296,25 @@ static void jm_number_to_str_wc(wchar_t *dest, long int number) {
 	}
 	
 	if (is_negative) dest[length] = '-';
+}
+
+static void jm_strcat_escaped_wc(wchar_t *json, wchar_t *string) {
+	int i, j, length;
+	
+	j = wcslen(json);
+	length = wcslen(string);
+	
+	for (i=0; i<length; i++) {
+		if (string[i] == '\n' || string[i] == '\"') {
+			json[j++] = '\\';
+			json[j++] = string[i];
+		}
+		else {
+			json[j++] = string[i];
+		}
+	}
+	
+	json[j++] = 0;
 }
 
 /* PUBLIC FUNCTIONS IMPLEMENTATION */
@@ -310,7 +366,7 @@ void json_key_wc(wchar_t *json, wchar_t *key) {
 
 void json_value_string_wc(wchar_t *json, wchar_t *string) {
 	jm_strcat_wc(json, L"\"");
-	jm_strcat_wc(json, string);
+	jm_strcat_escaped_wc(json, string);
 	jm_strcat_wc(json, L"\"");
 	jm_strcat_wc(json, L",");
 }
