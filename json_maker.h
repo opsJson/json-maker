@@ -19,6 +19,7 @@ void json_value_number(char *json, long int number);
 void json_value_double(char *json, double number);
 void json_value_bool(char *json, int boolean);
 void json_value_null(char *json);
+void json_value_raw(char *json, const char *raw);
 
 /* PRIVATE FUNCTIONS DECLARATION */
 
@@ -204,6 +205,11 @@ void json_value_null(char *json) {
 	jm_strcat(json, "null,");
 }
 
+void json_value_raw(char *json, const char *raw) {
+	jm_strcat(json, raw);
+	jm_strcat(json, ",");
+}
+
 #endif /* JSON_MAKER_H */
 
 #ifdef JM_WIDECHAR
@@ -227,6 +233,7 @@ void json_value_number_wc(wchar_t *json, long int number);
 void json_value_double_wc(wchar_t *json, double number);
 void json_value_bool_wc(wchar_t *json, int boolean);
 void json_value_null_wc(wchar_t *json);
+void json_value_raw_wc(wchar_t *json, const wchar_t *raw);
 
 /* PRIVATE FUNCTIONS DECLARATION */
 
@@ -406,6 +413,11 @@ void json_value_bool_wc(wchar_t *json, int boolean) {
 
 void json_value_null_wc(wchar_t *json) {
 	jm_strcat_wc(json, L"null,");
+}
+
+void json_value_raw_wc(wchar_t *json, const wchar_t *raw) {
+	jm_strcat_wc(json, raw);
+	jm_strcat_wc(json, ",");
 }
 
 #endif /* JM_WIDECHAR */
